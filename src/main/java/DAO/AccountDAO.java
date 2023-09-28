@@ -1,20 +1,16 @@
 package DAO;
-
 import Model.Account;
 import Util.ConnectionUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountDAO {
-
     public Account createAccount(Account account) {
         Connection connection = ConnectionUtil.getConnection();
         String sql = "INSERT INTO Account(username, password) VALUES (?, ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
