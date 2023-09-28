@@ -14,7 +14,6 @@ public class MessageDAO {
 
     private final Connection connection = ConnectionUtil.getConnection();
 
-    // Retrieve all messages
     public List<Message> getAllMessages() throws SQLException {
         List<Message> messages = new ArrayList<>();
         String sql = "SELECT * FROM message";
@@ -27,7 +26,6 @@ public class MessageDAO {
         return messages;
     }
 
-    // Retrieve a specific message by its ID
     public Message getMessageById(int messageId) throws SQLException {
         String sql = "SELECT * FROM message WHERE message_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -41,7 +39,6 @@ public class MessageDAO {
         return null;
     }
 
-    // Insert a new message
     public Message insertMessage(Message message) throws SQLException {
         String sql = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -58,7 +55,6 @@ public class MessageDAO {
         return message;
     }
 
-    // Update a message's text by its ID
     public boolean updateMessageText(int messageId, String newText) throws SQLException {
         String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -68,7 +64,6 @@ public class MessageDAO {
         }
     }
 
-    // Delete a message by its ID
     public boolean deleteMessage(int messageId) throws SQLException {
         String sql = "DELETE FROM message WHERE message_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -77,7 +72,6 @@ public class MessageDAO {
         }
     }
 
-    // Retrieve all messages posted by a particular user
     public List<Message> getAllMessagesByUserId(int userId) throws SQLException {
         List<Message> messages = new ArrayList<>();
         String sql = "SELECT * FROM message WHERE posted_by = ?";

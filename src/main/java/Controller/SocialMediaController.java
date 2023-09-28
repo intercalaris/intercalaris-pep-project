@@ -76,9 +76,11 @@ public class SocialMediaController {
         if (isDeleted) {
             ctx.status(200).result("Message deleted successfully.");
         } else {
-            ctx.status(200).result("Message not found or already deleted.");
+            ctx.status(200); 
         }
     }
+    
+    
 
     private void updateMessageTextHandler(Context ctx) throws Exception {
         int messageId = Integer.parseInt(ctx.pathParam("message_id"));

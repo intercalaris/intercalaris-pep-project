@@ -1,8 +1,6 @@
 package Service;
-
 import DAO.MessageDAO;
 import Model.Message;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -10,7 +8,7 @@ public class MessageService {
     private final MessageDAO messageDAO = new MessageDAO();
 
     public Message createMessage(Message message) {
-        if (message.getMessage_text() == null || message.getMessage_text().isEmpty() || message.getMessage_text().length() > 255) {
+        if (message.getMessage_text() == null || message.getMessage_text().isEmpty() || message.getMessage_text().length() > 254) {
             return null;
         }
         try {
