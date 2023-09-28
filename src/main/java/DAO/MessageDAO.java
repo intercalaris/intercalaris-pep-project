@@ -64,22 +64,28 @@ public class MessageDAO {
         }
     }
 
-    public boolean deleteMessage(int messageId) throws SQLException {
-        String sql = "DELETE FROM message WHERE message_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, messageId);
-            return preparedStatement.executeUpdate() > 0;
+    public Message deleteMessage(int messageId) throws SQLException {
+        Message message = getMessageById(messageId);
+        if (message != null) {
+            String sql = "DELETE FROM message WHERE message_id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, messageId);
+                preparedStatement.executeUpdate();
+                return message;
+            }
         }
+        return null;
     }
 
     public List<Message> getAllMessagesByUserId(int userId) throws SQLException {
         List<Message> messages = new ArrayList<>();
         String sql = "SELECT * FROM message WHERE posted_by = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet rs = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, userId);
-            while (rs.next()) {
-                messages.add(new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch")));
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    messages.add(new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch")));
+                }
             }
         }
         return messages;

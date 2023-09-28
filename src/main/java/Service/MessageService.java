@@ -37,12 +37,12 @@ public class MessageService {
         }
     }
 
-    public boolean deleteMessage(int messageId) {
+    public Message deleteMessage(int messageId) {
         try {
             return messageDAO.deleteMessage(messageId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
+            return null;
         }
     }
 

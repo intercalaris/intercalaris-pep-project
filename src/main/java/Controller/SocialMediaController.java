@@ -66,17 +66,18 @@ public class SocialMediaController {
         if (message != null) {
             ctx.json(message);
         } else {
-            ctx.status(404);
+            ctx.status(200).result("");
         }
     }
+    
 
     private void deleteMessageByIdHandler(Context ctx) {
         int messageId = Integer.parseInt(ctx.pathParam("message_id"));
-        boolean isDeleted = messageService.deleteMessage(messageId);
-        if (isDeleted) {
-            ctx.status(200).result("Message deleted successfully.");
+        Message deletedMessage = messageService.deleteMessage(messageId);
+        if (deletedMessage != null) {
+            ctx.status(200).json(deletedMessage);
         } else {
-            ctx.status(200); 
+            ctx.status(200);
         }
     }
     
