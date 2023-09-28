@@ -1,5 +1,4 @@
 package Controller;
-
 import Service.AccountService;
 import Service.MessageService;
 import Model.Account;
@@ -69,7 +68,6 @@ public class SocialMediaController {
             ctx.status(200).result("");
         }
     }
-    
 
     private void deleteMessageByIdHandler(Context ctx) {
         int messageId = Integer.parseInt(ctx.pathParam("message_id"));
@@ -81,11 +79,14 @@ public class SocialMediaController {
         }
     }
     
-    
 
     private void updateMessageTextHandler(Context ctx) throws Exception {
         int messageId = Integer.parseInt(ctx.pathParam("message_id"));
         Message newMessageDetails = mapper.readValue(ctx.body(), Message.class);
+                if (newMessageDetails.getMessage_text().length() > 200) {
+            ctx.status(400);
+            return;
+        }
         Message updatedMessage = messageService.updateMessageText(messageId, newMessageDetails.getMessage_text());
         if (updatedMessage != null ) {
             ctx.json(updatedMessage);
@@ -93,7 +94,6 @@ public class SocialMediaController {
             ctx.status(400);
         }
     }
-
     private void getAllMessagesByUserIdHandler(Context ctx) {
         int accountId = Integer.parseInt(ctx.pathParam("account_id"));
         ctx.json(messageService.getAllMessagesByUserId(accountId));
